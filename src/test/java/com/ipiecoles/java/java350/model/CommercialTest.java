@@ -15,6 +15,6 @@ public class CommercialTest {
         Double prime = commercial.getPrimeAnnuelle();
 
         //Then
-        Assertions.assertThat(prime).isEqualTo(560d);
+        Assertions.assertThat(prime).isEqualTo(500d);
     }
 }
