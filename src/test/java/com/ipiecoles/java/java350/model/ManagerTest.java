@@ -1,6 +1,6 @@
 package com.ipiecoles.java.java350.model;
 
-
+import com.ipiecoles.java.java350.repository.TechnicienRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.assertj.core.api.Assertions;
@@ -18,16 +18,21 @@ import java.util.Set;
 public class ManagerTest {
 
     @Parameter(value = 0)
-    public Double salaire;
+    public Double salaireBase;
     @Parameter(value = 1)
-    public Integer nbequipe;
+    public Integer nbTechInEquipe;
     @Parameter(value = 2)
     public Double excpectedSalarie;
+    @Parameter(value = 3)
+    public Double pourcentage;
+    @Parameter(value = 4)
+    public  Double expectedSalaireTech;
 
     @Parameterized.Parameters(name = "test salaire {0} avec {1} dans l'équipe")
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
-                {2000.0, 2, 3000.0}, {2000.0, 3, 3200.0}
+                {2000d, 2, 2140d, 0.07, 1763d},
+                {2000d, 3, 2120d, 0.06, 1748d}
         });
     }
 
@@ -35,25 +40,48 @@ public class ManagerTest {
     public void testSetSalaire() {
         //Given (Manager et son equipe)
         Manager manager = new Manager();
-        Set<Technicien> equipe = new HashSet<>();
-        Integer i;
-        i = 0;
-        while (i < nbequipe) {
-            Technicien t1 = new Technicien();
-            t1.setGrade(i);
-            equipe.add(t1);
-            i++;
-        }
+        HashSet<Technicien> equipe = AddTechInEquipe();
         manager.setEquipe(equipe);
 
         //When
-        manager.setSalaire(salaire);
+        manager.setSalaire(salaireBase);
         Double salaireFinal = manager.getSalaire();
 
         //Then
         Assertions.assertThat(manager.getSalaire()).isEqualTo(excpectedSalarie);
         Assertions.assertThat(manager.getSalaire()).isNotNegative();
-        Assertions.assertThat(manager.getSalaire()).isGreaterThanOrEqualTo(salaire);
+        Assertions.assertThat(manager.getSalaire()).isGreaterThanOrEqualTo(salaireBase);
+    }
 
+    @Test
+    public void testAugmenterSalaire(){
+
+        //Given
+        Manager m1 = new Manager("nom", "prenom", "matr", null, salaireBase, AddTechInEquipe());
+
+        //When
+        m1.augmenterSalaire(pourcentage);
+
+        //Then
+        Assertions.assertThat(m1.getSalaire()).isNotNegative();
+        Assertions.assertThat(m1.getSalaire()).isEqualTo(excpectedSalarie);
+        for(Technicien t : m1.getEquipe()){
+            Assertions.assertThat(t.getSalaire()).isNotNegative();
+            Assertions.assertThat(t.getSalaire()).isGreaterThan(expectedSalaireTech);
+        }
+    }
+
+    public HashSet<Technicien> AddTechInEquipe() {
+        HashSet<Technicien> equipe = new HashSet<>();
+        Integer i;
+        i = 0;
+        while (i < nbTechInEquipe) {
+            Technicien t = new Technicien();
+            t.setGrade(1);
+            equipe.add(t);
+            t.setSalaire(1500d);
+            i++;
+        }
+        return equipe;
     }
 }

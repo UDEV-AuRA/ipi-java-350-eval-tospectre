@@ -97,4 +97,16 @@ public class EmployeRepositoryTest {
         //Then
         Assertions.assertThat(employeList).isEmpty();
     }
+
+    @Test
+    public void testFindEmployePlusRiches(){
+
+        //Given
+
+        //When
+
+        //Then
+
+
+    }
 }
