@@ -39,6 +39,7 @@ public class EmployeServiceTest {
     public void testFindByMatriculeNotFound(){
         //Given
         Mockito.when(employeRepository.findByMatricule("C12345")).thenReturn(null);
+
         //When
         try{
             Employe employe = employeService.findByMatricule("C12345");
