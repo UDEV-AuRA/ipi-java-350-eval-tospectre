@@ -54,7 +54,7 @@ public class ManagerServiceIntegrationTest {
         Manager finalManager = managerRepository.findOneWithEquipeById(manager.getId());
         Technicien finalTech = technicienRepository.findOne(tech1.getId());
 
-        Assertions.assertThat(finalManager.getEquipe().contains(finalTech));
+        Assertions.assertThat(finalManager.getEquipe()).contains(finalTech);
         Assertions.assertThat(finalTech.getManager()).isNotNull();
         Assertions.assertThat(finalTech.getMatricule()).isNotNull();
     }
