@@ -22,7 +22,7 @@ public class ManagerTest {
     @Parameter(value = 1)
     public Integer nbTechInEquipe;
     @Parameter(value = 2)
-    public Double excpectedSalarie;
+    public Double excpectedSalarieMan;
     @Parameter(value = 3)
     public Double pourcentage;
     @Parameter(value = 4)
@@ -31,8 +31,8 @@ public class ManagerTest {
     @Parameterized.Parameters(name = "test salaire {0} avec {1} dans l'équipe")
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
-                {2000d, 2, 2140d, 0.07, 1763d},
-                {2000d, 3, 2120d, 0.06, 1748d}
+                {2000d, 2, 3000d, 0.07, 1763d},
+                {2000d, 3, 3200d, 0.06, 1748d}
         });
     }
 
@@ -48,11 +48,23 @@ public class ManagerTest {
         Double salaireFinal = manager.getSalaire();
 
         //Then
-        Assertions.assertThat(manager.getSalaire()).isEqualTo(excpectedSalarie);
+        Assertions.assertThat(manager.getSalaire()).isEqualTo(excpectedSalarieMan);
         Assertions.assertThat(manager.getSalaire()).isNotNegative();
         Assertions.assertThat(manager.getSalaire()).isGreaterThanOrEqualTo(salaireBase);
     }
 
+    @Test
+    public void testGetPrimeAnnuelle(){
+        //Given
+        Manager manager = new Manager();
+
+        //When
+        Double prime = manager.getPrimeAnnuelle();
+
+        //Then
+        Assertions.assertThat(prime).isNotNegative();
+        Assertions.assertThat(salaireBase + prime).isGreaterThan(salaireBase);
+    }
     @Test
     public void testAugmenterSalaire(){
 
@@ -64,7 +76,7 @@ public class ManagerTest {
 
         //Then
         Assertions.assertThat(m1.getSalaire()).isNotNegative();
-        Assertions.assertThat(m1.getSalaire()).isEqualTo(excpectedSalarie);
+        Assertions.assertThat(m1.getSalaire()).isEqualTo(excpectedSalarieMan);
         for(Technicien t : m1.getEquipe()){
             Assertions.assertThat(t.getSalaire()).isNotNegative();
             Assertions.assertThat(t.getSalaire()).isGreaterThan(expectedSalaireTech);
