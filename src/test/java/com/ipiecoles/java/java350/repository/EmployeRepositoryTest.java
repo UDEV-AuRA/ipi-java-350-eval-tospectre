@@ -4,6 +4,7 @@ import com.ipiecoles.java.java350.MySpringApplication;
 import com.ipiecoles.java.java350.model.Commercial;
 import com.ipiecoles.java.java350.model.Employe;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.ListAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,19 +31,22 @@ public class EmployeRepositoryTest {
         employeRepository.deleteAll();
         //Ajouter nos données de test
         //Given
-        pierreDurand = new Commercial();
-        pierreDurand.setNom("Durand");
-        pierreDurand.setPrenom("Pierre");
-        pierreDurand = employeRepository.save(pierreDurand);
-
         rachidDurand = new Commercial();
         rachidDurand.setNom("Durand");
         rachidDurand.setPrenom("Rachid");
+        rachidDurand.setSalaire(5500d);
         rachidDurand = employeRepository.save(rachidDurand);
+
+        pierreDurand = new Commercial();
+        pierreDurand.setNom("Durand");
+        pierreDurand.setPrenom("Pierre");
+        pierreDurand.setSalaire(5000d);
+        pierreDurand = employeRepository.save(pierreDurand);
 
         manuelPierre = new Commercial();
         manuelPierre.setNom("Pierre");
         manuelPierre.setPrenom("manuel");
+        manuelPierre.setSalaire(4800d);
         manuelPierre = employeRepository.save(manuelPierre);
     }
 
@@ -104,9 +108,16 @@ public class EmployeRepositoryTest {
         //Given
 
         //When
+        List<Employe> employeList = employeRepository.findEmployePlusRiches();
 
         //Then
-
-
+        Assertions.assertThat(employeList).isNotEmpty();
+        Assertions.assertThat(employeList.size()).isEqualTo(1);
+        Assertions.assertThat(employeList).contains(rachidDurand);
+        Assertions.assertThat(employeList).containsOnlyOnce(rachidDurand);
+        Assertions.assertThat(employeList).doesNotHaveDuplicates();
+        Assertions.assertThat(employeList).doesNotContain(manuelPierre);
+        Assertions.assertThat(employeList).doesNotContain(pierreDurand);
+        Assertions.assertThat(employeList).hasOnlyElementsOfType(Commercial.class);
     }
 }
