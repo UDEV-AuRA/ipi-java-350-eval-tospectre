@@ -15,9 +15,7 @@ public class Manager extends Employe {
 	@OneToMany(mappedBy = "manager")
 	private Set<Technicien> equipe = new HashSet<>();
 
-	public Manager(){
-
-	}
+	public Manager(){}
 
 	public Manager(String nom, String prenom, String matricule, LocalDate dateEmbauche, Double salaire, HashSet<Technicien> equipe) {
 		super(nom, prenom, matricule, dateEmbauche, salaire);
